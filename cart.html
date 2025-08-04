@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shopping Cart</title>
+  <link rel="stylesheet" href="css/cart-style.css" />
+</head>
+<body>
+  <h1>Your Cart</h1>
+  <div id="cart-items"></div>
+  <h3>Total: ₹<span id="total-price">0</span></h3>
+  <!-- Optional: Add a “Back to Store” link -->
+  <p><a href="index.html">← Continue Shopping</a></p>
+
+  <script>
+    const cartContainer = document.getElementById('cart-items');
+    const totalSpan = document.getElementById('total-price');
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function renderCart() {
+      cartContainer.innerHTML = '';
+      let total = 0;
+
+      if (cart.length === 0) {
+        cartContainer.innerHTML = "<p>Your cart is empty.</p>";
+      } else {
+        cart.forEach(item => {
+          total += item.price * item.quantity;
+          cartContainer.innerHTML += `
+            <div class="product-card">
+              <h3>${item.name}</h3>
+              <p>Price: ₹${item.price}</p>
+              <p>
+                Quantity: 
+                <input type="number" value="${item.quantity}" min="1" onchange="updateQty(${item.id}, this.value)">
+              </p>
+              <button onclick="removeItem(${item.id})">Remove</button>
+            </div>
+          `;
+        });
+      }
+
+      totalSpan.innerText = total;
+    }
+
+    function updateQty(id, qty) {
+      cart = cart.map(item => 
+        item.id === id ? { ...item, quantity: parseInt(qty) } : item
+      );
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    function removeItem(id) {
+      cart = cart.filter(item => item.id !== id);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    renderCart();
+  </script>
+  <script src="js/products.js"></script>
+<script src="js/script.js"></script>
+
+</body>
+</html>

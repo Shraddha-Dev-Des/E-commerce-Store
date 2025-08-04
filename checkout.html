@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <h1>Checkout</h1>
+
+  <form id="checkout-form">
+    <input type="text" id="name" placeholder="Full Name" required><br><br>
+    <input type="text" id="address" placeholder="Shipping Address" required><br><br>
+    <input type="email" id="email" placeholder="Email Address" required><br><br>
+    <button type="submit">Place Order</button>
+  </form>
+
+  <!-- Optional: Back to cart link -->
+  <p><a href="cart.html">← Back to Cart</a></p>
+
+  <script>
+    document.getElementById('checkout-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      if (!name || !address || !email) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      alert("🎉 Order Placed Successfully!");
+      localStorage.removeItem('cart');
+      this.reset();
+    });
+  </script>
+<
